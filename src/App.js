@@ -14,7 +14,7 @@ function App() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('http://175.41.185.23:8080/demo/api/v1/customers');
+      const response = await axios.get('https://175.41.185.23:8443/demo/api/v1/customers');
       setData(response.data);
       setLoading(false);
     } catch (error) {
