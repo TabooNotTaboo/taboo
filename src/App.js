@@ -4,7 +4,7 @@ import axios from 'axios';
 function App() {
   const [data, setData] = useState([]);
   const [newItem, setNewItem] = useState({ name: '', email: '' });
-  const [editedItem, setEditedItem] = useState({ id: '', name: '', email: '' });
+  const [editedItem, setEditedItem] = useState({ name: '', email: '' });
   const [editMode, setEditMode] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -44,7 +44,7 @@ function App() {
   
       setData(updatedData);
       setNewItem({ name: '', email: '' });
-      setEditedItem({ id: '', name: '', email: '' });
+      setEditedItem({ name: '', email: '' });
       setEditMode(false);
       
       fetchData();
@@ -71,7 +71,7 @@ function App() {
   };
 
   const cancelEdit = () => {
-    setEditedItem({ id: '', name: '', email: '' });
+    setEditedItem({name: '', email: '' });
     setEditMode(false);
   };
 
