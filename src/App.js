@@ -33,9 +33,9 @@ function App() {
     try {
       let response;
       if (editMode) {
-        response = await axios.put(`http://175.41.185.23:8080/demo/api/v1/customers/${editedItem.id}`, editedItem);
+        response = await axios.put(`http://175.41.185.23:8443/demo/api/v1/customers/${editedItem.id}`, editedItem);
       } else {
-        response = await axios.post('http://175.41.185.23:8080/demo/api/v1/customers', newItem);
+        response = await axios.post('http://175.41.185.23:8443/demo/api/v1/customers', newItem);
       }
   
       const updatedData = editMode
@@ -55,7 +55,7 @@ function App() {
 
   const handleDelete = async (idToDelete) => {
     try {
-      await axios.delete(`http://175.41.185.23:8080/demo/api/v1/customers/${idToDelete}`);
+      await axios.delete(`http://175.41.185.23:8443/demo/api/v1/customers/${idToDelete}`);
       const updatedData = data.filter(item => item.id !== idToDelete);
       setData(updatedData);
     
