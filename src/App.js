@@ -29,24 +29,27 @@ function App() {
       alert('Vui lòng điền đầy đủ thông tin.');
       return;
     }
-  
+
     try {
       let response;
       if (editMode) {
-        response = await axios.put(`https://175.41.185.23:8443/demo/api/v1/customers/${editedItem.id}`, editedItem);
+        response = await axios.put(`https://175.41.185.23:8443/demo/api/v1/customers/${editedItem.id}`, {
+          name: editedItem.name,
+          email: editedItem.email,
+        });
       } else {
         response = await axios.post('https://175.41.185.23:8443/demo/api/v1/customers', newItem);
       }
-  
+
       const updatedData = editMode
-        ? data.map(item => (item.id === editedItem.id ? editedItem : item))
+        ? data.map((item) => (item.id === editedItem.id ? { ...item, name: editedItem.name, email: editedItem.email } : item))
         : [...data, response.data];
-  
+
       setData(updatedData);
       setNewItem({ name: '', email: '' });
       setEditedItem({ name: '', email: '' });
       setEditMode(false);
-      
+
       fetchData();
     } catch (error) {
       console.error(editMode ? 'Lỗi khi chỉnh sửa đối tượng:' : 'Lỗi khi thêm đối tượng mới:', error);
@@ -58,7 +61,7 @@ function App() {
       await axios.delete(`https://175.41.185.23:8443/demo/api/v1/customers/${idToDelete}`);
       const updatedData = data.filter(item => item.id !== idToDelete);
       setData(updatedData);
-    
+
       fetchData();
     } catch (error) {
       console.error('Lỗi khi xóa đối tượng:', error);
@@ -71,9 +74,46 @@ function App() {
   };
 
   const cancelEdit = () => {
-    setEditedItem({name: '', email: '' });
+    setEditedItem({ name: '', email: '' });
     setEditMode(false);
   };
+
+  const renderForm = () => (
+    <form onSubmit={handleAddOrUpdate}>
+      <input
+        type="hidden"
+        value={editedItem.id}
+        onChange={e => setEditedItem({ ...editedItem, id: e.target.value })}
+      />
+      <input
+        type="text"
+        placeholder="Name"
+        value={editMode ? editedItem.name : newItem.name}
+        onChange={e =>
+          editMode
+            ? setEditedItem({ ...editedItem, name: e.target.value })
+            : setNewItem({ ...newItem, name: e.target.value })
+        }
+      />
+      <input
+        type="text"
+        placeholder="Email"
+        value={editMode ? editedItem.email : newItem.email}
+        onChange={e =>
+          editMode
+            ? setEditedItem({ ...editedItem, email: e.target.value })
+            : setNewItem({ ...newItem, email: e.target.value })
+        }
+      />
+      {editMode && (
+        <div>
+          <button type="submit">Lưu</button>
+          <button onClick={cancelEdit}>Hủy</button>
+        </div>
+      )}
+      {!editMode && <button type="submit">Thêm</button>}
+    </form>
+  );
 
   if (loading) {
     return <div>Loading...</div>;
@@ -106,40 +146,7 @@ function App() {
         </tbody>
       </table>
       <h2>{editMode ? 'Chỉnh Sửa Đối Tượng' : 'Thêm Đối Tượng Mới'}</h2>
-      <form onSubmit={handleAddOrUpdate}>
-        <input
-          type="hidden"
-          value={editedItem.id}
-          onChange={e => setEditedItem({ ...editedItem, id: e.target.value })}
-        />
-        <input
-          type="text"
-          placeholder="Name"
-          value={editMode ? editedItem.name : newItem.name}
-          onChange={e =>
-            editMode
-              ? setEditedItem({ ...editedItem, name: e.target.value })
-              : setNewItem({ ...newItem, name: e.target.value })
-          }
-        />
-        <input
-          type="text"
-          placeholder="Email"
-          value={editMode ? editedItem.email : newItem.email}
-          onChange={e =>
-            editMode
-              ? setEditedItem({ ...editedItem, email: e.target.value })
-              : setNewItem({ ...newItem, email: e.target.value })
-          }
-        />
-        {editMode && (
-          <div>
-            <button type="submit">Lưu</button>
-            <button onClick={cancelEdit}>Hủy</button>
-          </div>
-        )}
-        {!editMode && <button type="submit">Thêm</button>}
-      </form>
+      {renderForm()}
     </div>
   );
 }
