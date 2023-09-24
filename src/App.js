@@ -4,7 +4,7 @@ import axios from 'axios';
 function App() {
   const [data, setData] = useState([]);
   const [newItem, setNewItem] = useState({ name: '', email: '' });
-  const [editedItem, setEditedItem] = useState({ name: '', email: '' });
+  const [editedItem, setEditedItem] = useState({ name: '', email: '', id: '' });
   const [editMode, setEditMode] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -23,9 +23,15 @@ function App() {
     }
   };
 
+  const handleEditClick = (itemToEdit) => {
+    // Chỉ cập nhật 'name' và 'email' trong editedItem khi chỉnh sửa
+    setEditedItem({ name: itemToEdit.name, email: itemToEdit.email, id: itemToEdit.id });
+    setEditMode(true);
+  };
+
   const handleAddOrUpdate = async (e) => {
     e.preventDefault();
-    if (!newItem.name || !newItem.email) {
+    if (!editedItem.name || !editedItem.email) {
       alert('Vui lòng điền đầy đủ thông tin.');
       return;
     }
@@ -33,6 +39,7 @@ function App() {
     try {
       let response;
       if (editMode) {
+        // Chỉ gửi 'name' và 'email' cho server khi chỉnh sửa
         response = await axios.put(`https://175.41.185.23:8443/demo/api/v1/customers/${editedItem.id}`, {
           name: editedItem.name,
           email: editedItem.email,
@@ -42,12 +49,12 @@ function App() {
       }
 
       const updatedData = editMode
-      ? data.map(item => (item.id === editedItem.id ? editedItem : item))
-      : [...data, response.data];
+        ? data.map(item => (item.id === editedItem.id ? { ...item, name: editedItem.name, email: editedItem.email } : item))
+        : [...data, response.data];
 
       setData(updatedData);
       setNewItem({ name: '', email: '' });
-      setEditedItem({ name: '', email: '' });
+      setEditedItem({ name: '', email: '', id: '' });
       setEditMode(false);
 
       fetchData();
@@ -68,13 +75,8 @@ function App() {
     }
   };
 
-  const handleEditClick = (itemToEdit) => {
-    setEditedItem(itemToEdit);
-    setEditMode(true);
-  };
-
   const cancelEdit = () => {
-    setEditedItem({ name: '', email: '' });
+    setEditedItem({ name: '', email: '', id: '' });
     setEditMode(false);
   };
 
