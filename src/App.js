@@ -42,8 +42,8 @@ function App() {
       }
 
       const updatedData = editMode
-        ? data.map((item) => (item.id === editedItem.id ? { ...item, name: editedItem.name, email: editedItem.email } : item))
-        : [...data, response.data];
+      ? data.map(item => (item.id === editedItem.id ? editedItem : item))
+      : [...data, response.data];
 
       setData(updatedData);
       setNewItem({ name: '', email: '' });
