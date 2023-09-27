@@ -11,7 +11,7 @@ function Home() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('https://13.212.182.252:8443/demo/api/v1/customers');
+      const response = await axios.get('https://13.250.65.254:8443/demo20/api/v1/customers');
       setData(response.data);
     } catch (error) {
       console.error('Lỗi khi lấy dữ liệu:', error);
@@ -20,7 +20,7 @@ function Home() {
 
   const handleDelete = async (idToDelete) => {
     try {
-      await axios.delete(`https://13.212.182.252:8443/demo/api/v1/customers/${idToDelete}`);
+      await axios.delete(`https://13.250.65.254:8443/demo20/api/v1/customers/${idToDelete}`);
       fetchData();
     } catch (error) {
       console.error('Lỗi khi xóa đối tượng:', error);

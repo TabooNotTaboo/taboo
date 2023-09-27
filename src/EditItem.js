@@ -13,7 +13,7 @@ function EditItem() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`https://13.212.182.252:8443/demo/api/v1/customers/${id}`);
+      const response = await axios.get(`https://13.250.65.254:8443/demo20/api/v1/customers/${id}`);
       setEditedItem(response.data);
     } catch (error) {
       console.error('Lỗi khi lấy dữ liệu:', error);
@@ -22,8 +22,8 @@ function EditItem() {
 
   const handleSave = async () => {
     try {
-      await axios.put(`https://13.212.182.252:8443/demo/api/v1/customers/${id}`, editedItem);
-      navigate('/'); // Sử dụng hook useNavigate để điều hướng về trang chủ sau khi lưu chỉnh sửa
+      await axios.put(`https://13.250.65.254:8443/demo20/api/v1/customers/${id}`, editedItem);
+      navigate('/');  
     } catch (error) {
       console.error('Lỗi khi lưu dữ liệu:', error);
     }
