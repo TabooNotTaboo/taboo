@@ -8,7 +8,7 @@ function AddItem() {
 
   const handleSave = async () => {
     try {
-      await axios.post('https://13.250.65.254:8443/demo20/api/v1/customers', newItem);
+      await axios.post('https://13.229.50.210:8443/demo20/api/v1/customers', newItem);
       navigate('/'); 
     } catch (error) {
       console.error('Lỗi khi tạo mới đối tượng:', error);
